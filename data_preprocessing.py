@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.impute import SimpleImputer
 
 def read_clean_data(save_to_csv=False):
     
@@ -17,11 +16,14 @@ def read_clean_data(save_to_csv=False):
         data: A pandas dataframe containing the preprocessed data.
         
     """
-
+    
+    # Load the weather data
     data = pd.read_csv('Data\weather_data\processed_data.csv')  # Load the data
 
     data = data.iloc[296:-2, :].reset_index(drop=True)  # Adjust the data to include the 2003-2022 range
 
+
+    # Load the pollution data
     pollution_data_1 = pd.read_csv('Data\PM2.5\PM2.5_2003_2012.csv') # Load the pollution data
     pollution_data_2 = pd.read_csv('Data\PM2.5\PM2.5_2013_2022.csv')
 
@@ -32,12 +34,14 @@ def read_clean_data(save_to_csv=False):
     pollution_data.replace(9999, np.NaN, inplace=True)  # Replace the 9999 values with NaN
     pollution_data['P2.5'] = pollution_data.mean(axis=1)    # Calculate the mean of the pollution data (for each day)
 
+    # Combine the two datasets
     X = data.drop('date', axis=1).iloc[1:, :].reset_index(drop=True)    # Separate the input features and move the data one day forward
     y = pd.DataFrame(pollution_data['P2.5']).iloc[:-1, :]   # Separate the output feature and move the data one day backward
     
     y.fillna(y.mean(), inplace=True)    # Replace the NaN values with the mean of the pollution data
     
     data = pd.concat([X, y], axis=1)    # Combine the input and output features
+
 
     if save_to_csv: 
         data.to_csv('Data\weather_data\data.csv', index=False)  # Save the data to a csv file
@@ -61,6 +65,5 @@ def load_X_y():
     y = pd.DataFrame(data['P2.5'])  # Separate the output feature
     return X, y
     
-X, y = load_X_y()
 
 
