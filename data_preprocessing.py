@@ -32,12 +32,13 @@ def read_clean_data(save_to_csv=False):
     pollution_data = pollution_data.drop(['Station ID', 'Pollutant'], axis=1)   # Drop the unnecessary columns
 
     pollution_data.replace(9999, np.NaN, inplace=True)  # Replace the 9999 values with NaN
+    pollution_data.replace(-999, np.NaN, inplace=True)  # Replace the -999 values with NaN 
     pollution_data['P2.5'] = pollution_data.mean(axis=1)    # Calculate the mean of the pollution data (for each day)
 
     # Combine the two datasets
     X = data.drop('date', axis=1).iloc[1:, :].reset_index(drop=True)    # Separate the input features and move the data one day forward
     y = pd.DataFrame(pollution_data['P2.5']).iloc[:-1, :]   # Separate the output feature and move the data one day backward
-    
+       
     y.fillna(y.mean(), inplace=True)    # Replace the NaN values with the mean of the pollution data
     
     data = pd.concat([X, y], axis=1)    # Combine the input and output features
@@ -65,5 +66,3 @@ def load_X_y():
     y = pd.DataFrame(data['P2.5'])  # Separate the output feature
     return X, y
     
-
-
