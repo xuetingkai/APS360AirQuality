@@ -10,13 +10,14 @@
 """
 
 # install packages
-import pandas as pd
+
 import numpy as np
 import random
 import math
 from joblib import Parallel, delayed
 from data_preprocessing import load_X_y
-from sklearn import metrics
+import pandas as pd
+from sklearn import metrics, rf
 
 class Tree(object):
     """定义一棵决策树"""
@@ -212,7 +213,7 @@ class RandomForestRegression(object):
 if __name__ == '__main__':
     X, y = load_X_y();
     # change to correct path
-    df = pd.read_csv("/usr/local/bin/python3.11 /Users/xinyigao\PycharmProjects\APS360AirQuality\Data\weather_data\data.csv").fillna(-1)
+    # df = pd.read_csv("PycharmProjects\APS360AirQuality\Data\weather_data\data.csv").fillna(-1)
 
     clf = RandomForestRegression(n_estimators=5,
                                  max_depth=5,
