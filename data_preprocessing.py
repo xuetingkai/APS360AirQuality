@@ -18,7 +18,7 @@ def read_clean_data(save_to_csv=False):
     """
     
     # Load the weather data
-    data = pd.read_csv('Data\weather_data\processed_data.csv')  # Load the data
+    data = pd.read_csv('~PycharmProjects\APS360AirQuality\Data\weather_data\processed_data.csv')  # Load the data
 
     data = data.iloc[296:-2, :].reset_index(drop=True)  # Adjust the data to include the 2003-2022 range
 
@@ -61,7 +61,7 @@ def load_X_y():
         
     """
     
-    data = pd.read_csv('Data\weather_data\data.csv')    # Load the data
+    data = pd.read_csv('~PycharmProjects\APS360AirQuality\Data\weather_data\data.csv')    # Load the data
     X = data.drop('P2.5', axis=1)   # Separate the input features
     y = pd.DataFrame(data['P2.5'])  # Separate the output feature
     return X, y

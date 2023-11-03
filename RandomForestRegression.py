@@ -14,8 +14,9 @@ import pandas as pd
 import numpy as np
 import random
 import math
-from sklearn.externals.joblib import Parallel, delayed
-
+from joblib import Parallel, delayed
+from data_preprocessing import load_X_y
+from sklearn import metrics
 
 class Tree(object):
     """定义一棵决策树"""
@@ -209,10 +210,10 @@ class RandomForestRegression(object):
 
 
 if __name__ == '__main__':
+    X, y = load_X_y();
     # change to correct path
-    df = pd.read_csv("").fillna(-1)
-    # MEDV -> column header of labels P2.5
-    df = df.rename(columns={'MEDV': 'label'})
+    df = pd.read_csv("/usr/local/bin/python3.11 /Users/xinyigao\PycharmProjects\APS360AirQuality\Data\weather_data\data.csv").fillna(-1)
+
     clf = RandomForestRegression(n_estimators=5,
                                  max_depth=5,
                                  min_samples_split=50,
@@ -223,10 +224,8 @@ if __name__ == '__main__':
                                  random_state=66)
     train_count = int(0.7 * len(df))
     # column headers
-    feature_list = ["CRIM", "ZN", "INDUS", "CHAS", "NOX", "RM", "AGE", "DIS", "RAD",
-                    "TAX", "PTRATIO", "B", "LSTAT", "MEDV"]
-    clf.fit(df.loc[:train_count, feature_list], df.loc[:train_count, 'label'])
+    feature_list = ["max dew point", "max relative humidity", "max temperature", "max wind speed","min dew point", "min relative humidity", "min temperature", "min wind speed","precipitation","rain","snow","snow on ground"]
+    clf.fit(X,y)
 
-    from sklearn import metrics
     print(metrics.mean_squared_error(df.loc[:train_count, 'label'], clf.predict(df.loc[:train_count, feature_list])))
     print(metrics.mean_squared_error(df.loc[train_count:, 'label'], clf.predict(df.loc[train_count:, feature_list])))
